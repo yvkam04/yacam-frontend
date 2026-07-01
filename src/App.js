@@ -3,15 +3,22 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Companies from "./pages/Companies";
 import Users from "./pages/Users";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/companies" element={<Companies />} />
-        <Route path="/users" element={<Users />} />
+        <Route path="/dashboard" element={
+          <PrivateRoute><Dashboard /></PrivateRoute>
+        } />
+        <Route path="/companies" element={
+          <PrivateRoute><Companies /></PrivateRoute>
+        } />
+        <Route path="/users" element={
+          <PrivateRoute><Users /></PrivateRoute>
+        } />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
