@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Companies from "./pages/Companies";
 import Users from "./pages/Users";
-import PrivateRoute from "./PrivateRoute";
+import PrivateRoute from "./pages/PrivateRoute";
 
 function App() {
   return (
