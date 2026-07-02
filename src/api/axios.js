@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://yacam-backend.onrender.com", // ✅ URL de production (pas localhost)
+  baseURL: "https://yacam-backend.onrender.com/api", // ✅ URL de production (pas localhost)
 });
 
 api.interceptors.request.use((config) => {
