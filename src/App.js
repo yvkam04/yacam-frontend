@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Companies from "./pages/Companies";
 import Users from "./pages/Users";
+import Cameras from "./pages/Cameras";
 import PrivateRoute from "./pages/PrivateRoute";
 
 function App() {
@@ -18,6 +19,9 @@ function App() {
         } />
         <Route path="/users" element={
           <PrivateRoute><Users /></PrivateRoute>
+        } />
+        <Route path="/cameras" element={
+          <PrivateRoute><Cameras /></PrivateRoute>
         } />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
