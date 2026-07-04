@@ -58,6 +58,10 @@ function Dashboard() {
             style={{ color: "white", background: "transparent", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "6px", padding: "6px 14px", cursor: "pointer" }}>
             👥 Utilisateurs
           </button>
+          <button onClick={() => navigate("/cameras")}
+            style={{ color: "white", background: "transparent", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "6px", padding: "6px 14px", cursor: "pointer" }}>
+            📹 Caméras
+          </button>
           <button onClick={logout}
             style={{ color: "white", background: "#dc2626", border: "none", borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontWeight: 600 }}>
             🚪 Déconnexion
@@ -118,7 +122,7 @@ function Dashboard() {
           {[
             { icon: "🏢", label: "Gérer les entreprises", desc: "Ajouter, modifier, supprimer", path: "/companies", color: "#2563eb" },
             { icon: "👥", label: "Gérer les utilisateurs", desc: "Droits et accès", path: "/users", color: "#059669" },
-            { icon: "📹", label: "Caméras (à venir)", desc: "Flux en direct et archives", path: "#", color: "#9333ea" },
+            { icon: "📹", label: "Gérer les caméras", desc: "Flux en direct et archives", path: "/cameras", color: "#9333ea" },
           ].map((item) => (
             <div key={item.label}
               onClick={() => navigate(item.path)}
