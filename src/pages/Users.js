@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import logo from "../logo.png";
+import Footer from "./Footer";
 
 function Users() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function Users() {
   );
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f1f5f9" }}>
+    <div style={{ minHeight: "100vh", background: "#f1f5f9", display: "flex", flexDirection: "column" }}>
 
       {/* Navbar */}
       <nav style={{
@@ -68,6 +69,10 @@ function Users() {
             style={{ color: "white", background: "transparent", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "6px", padding: "6px 14px", cursor: "pointer" }}>
             🏢 Entreprises
           </button>
+          <button onClick={() => navigate("/cameras")}
+            style={{ color: "white", background: "transparent", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "6px", padding: "6px 14px", cursor: "pointer" }}>
+            📹 Caméras
+          </button>
           <button onClick={logout}
             style={{ color: "white", background: "#dc2626", border: "none", borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontWeight: 600 }}>
             🚪 Déconnexion
@@ -76,9 +81,7 @@ function Users() {
       </nav>
 
       {/* Contenu */}
-      <div style={{ padding: "36px 40px" }}>
-
-        {/* Header */}
+      <div style={{ padding: "36px 40px", flex: 1 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
           <div>
             <h1 style={{ color: "#1e293b", fontWeight: 800, fontSize: "1.8rem", margin: 0 }}>👥 Utilisateurs</h1>
@@ -86,7 +89,6 @@ function Users() {
           </div>
         </div>
 
-        {/* Recherche */}
         <input
           placeholder="🔍 Rechercher un utilisateur..."
           value={search}
@@ -94,7 +96,6 @@ function Users() {
           style={{ borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db", marginBottom: "20px", width: "320px", outline: "none" }}
         />
 
-        {/* Tableau */}
         <div style={{ background: "white", borderRadius: "14px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
@@ -135,6 +136,8 @@ function Users() {
           </table>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

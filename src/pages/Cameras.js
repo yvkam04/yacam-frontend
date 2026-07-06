@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import logo from "../logo.png";
+import Footer from "./Footer";
 
 function Cameras() {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ function Cameras() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f1f5f9" }}>
+    <div style={{ minHeight: "100vh", background: "#f1f5f9", display: "flex", flexDirection: "column" }}>
 
       {/* Navbar */}
       <nav style={{
@@ -100,9 +101,7 @@ function Cameras() {
       </nav>
 
       {/* Contenu */}
-      <div style={{ padding: "36px 40px" }}>
-
-        {/* Header */}
+      <div style={{ padding: "36px 40px", flex: 1 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
           <div>
             <h1 style={{ color: "#1e293b", fontWeight: 800, fontSize: "1.8rem", margin: 0 }}>📹 Caméras</h1>
@@ -114,12 +113,9 @@ function Cameras() {
           </button>
         </div>
 
-        {/* Grille caméras */}
         {loading ? (
           <div style={{ textAlign: "center", padding: "60px", color: "#94a3b8" }}>Chargement...</div>
         ) : cameras.length === 0 ? (
-
-          /* Aucune caméra — message d'attente */
           <div style={{
             background: "white", borderRadius: "16px", padding: "60px",
             textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
@@ -136,10 +132,7 @@ function Cameras() {
               + Ajouter ma première caméra
             </button>
           </div>
-
         ) : (
-
-          /* Grille des caméras */
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "20px" }}>
             {cameras.map((cam) => {
               const badge = getStatusBadge(cam.status);
@@ -149,18 +142,14 @@ function Cameras() {
                   boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
                   overflow: "hidden", border: "1px solid #e2e8f0",
                 }}>
-                  {/* Aperçu vidéo */}
                   <div style={{
                     background: "#0d1b2a", height: "180px",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     position: "relative",
                   }}>
                     {cam.stream_url ? (
-                      <video
-                        src={cam.stream_url}
-                        autoPlay muted
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                      />
+                      <video src={cam.stream_url} autoPlay muted
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
                       <div style={{ textAlign: "center", color: "#64748b" }}>
                         <div style={{ fontSize: "3rem", marginBottom: "8px" }}>📷</div>
@@ -170,7 +159,6 @@ function Cameras() {
                         </div>
                       </div>
                     )}
-                    {/* Badge statut */}
                     <span style={{
                       position: "absolute", top: "10px", right: "10px",
                       ...badge, padding: "3px 10px", borderRadius: "20px",
@@ -179,8 +167,6 @@ function Cameras() {
                       {badge.label}
                     </span>
                   </div>
-
-                  {/* Infos caméra */}
                   <div style={{ padding: "16px" }}>
                     <div style={{ fontWeight: 700, color: "#1e293b", fontSize: "1rem", marginBottom: "4px" }}>
                       {cam.nom}
@@ -192,13 +178,11 @@ function Cameras() {
                       {cam.adresse_ip}:{cam.port || 554}
                     </div>
                     <div style={{ display: "flex", gap: "8px" }}>
-                      <button
-                        onClick={() => setSelectedCamera(cam)}
+                      <button onClick={() => setSelectedCamera(cam)}
                         style={{ flex: 1, padding: "8px", borderRadius: "6px", border: "none", background: "#eff6ff", color: "#2563eb", cursor: "pointer", fontWeight: 600, fontSize: "0.85rem" }}>
                         👁️ Voir le flux
                       </button>
-                      <button
-                        onClick={() => del(cam.id)}
+                      <button onClick={() => del(cam.id)}
                         style={{ padding: "8px 12px", borderRadius: "6px", border: "none", background: "#fef2f2", color: "#dc2626", cursor: "pointer" }}>
                         🗑️
                       </button>
@@ -211,12 +195,13 @@ function Cameras() {
         )}
       </div>
 
-      {/* Modal Ajouter caméra */}
+      <Footer />
+
+      {/* Modal Ajouter */}
       {showModal && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
           <div style={{ background: "white", borderRadius: "14px", padding: "32px", width: "480px", boxShadow: "0 20px 60px rgba(0,0,0,0.3)", maxHeight: "90vh", overflowY: "auto" }}>
             <h5 style={{ fontWeight: 700, marginBottom: "20px", color: "#1e293b" }}>➕ Ajouter une caméra</h5>
-
             {[
               { label: "Nom de la caméra", key: "nom", placeholder: "Ex: Caméra Entrée" },
               { label: "Adresse IP", key: "adresse_ip", placeholder: "Ex: 192.168.1.100" },
@@ -229,21 +214,15 @@ function Cameras() {
                 <label style={{ fontWeight: 600, color: "#374151", fontSize: "0.9rem", display: "block", marginBottom: "6px" }}>
                   {field.label}
                 </label>
-                <input
-                  type={field.type || "text"}
-                  value={form[field.key]}
+                <input type={field.type || "text"} value={form[field.key]}
                   onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                   placeholder={field.placeholder}
-                  style={{ width: "100%", borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db", outline: "none", boxSizing: "border-box" }}
-                />
+                  style={{ width: "100%", borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db", outline: "none", boxSizing: "border-box" }} />
               </div>
             ))}
-
             <div style={{ background: "#fffbeb", border: "1px solid #fcd34d", borderRadius: "8px", padding: "12px", marginBottom: "20px", fontSize: "0.85rem", color: "#92400e" }}>
-              ⚠️ L'URL RTSP sera générée automatiquement :<br />
-              <code>rtsp://login:password@IP:port/stream</code>
+              ⚠️ URL RTSP générée : <code>rtsp://login:password@IP:port/stream</code>
             </div>
-
             <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
               <button onClick={() => setShowModal(false)}
                 style={{ padding: "10px 20px", borderRadius: "8px", border: "1px solid #d1d5db", background: "white", cursor: "pointer" }}>
@@ -277,7 +256,7 @@ function Cameras() {
                   rtsp://{selectedCamera.login}:***@{selectedCamera.adresse_ip}:{selectedCamera.port}/stream
                 </code>
                 <div style={{ color: "#64748b", fontSize: "0.8rem", marginTop: "12px" }}>
-                  Connectez la caméra au réseau pour activer le flux en direct
+                  Connectez la caméra au réseau pour activer le flux
                 </div>
               </div>
             </div>

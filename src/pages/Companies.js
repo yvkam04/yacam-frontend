@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import logo from "../logo.png";
+import Footer from "./Footer";
 
 function Companies() {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ function Companies() {
   };
 
   const filtered = companies.filter((c) =>
-   (c.nom || c.name)?.toLowerCase().includes(search.toLowerCase())
+    (c.nom || c.name)?.toLowerCase().includes(search.toLowerCase())
   );
 
   const logout = () => {
@@ -57,7 +58,9 @@ function Companies() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f1f5f9" }}>
+    <div style={{ minHeight: "100vh", background: "#f1f5f9", display: "flex", flexDirection: "column" }}>
+
+      {/* Navbar */}
       <nav style={{
         background: "linear-gradient(90deg, #0d1b2a, #1b3a6b)",
         padding: "0 32px", display: "flex", alignItems: "center",
@@ -80,6 +83,10 @@ function Companies() {
             style={{ color: "white", background: "transparent", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "6px", padding: "6px 14px", cursor: "pointer" }}>
             👥 Utilisateurs
           </button>
+          <button onClick={() => navigate("/cameras")}
+            style={{ color: "white", background: "transparent", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "6px", padding: "6px 14px", cursor: "pointer" }}>
+            📹 Caméras
+          </button>
           <button onClick={logout}
             style={{ color: "white", background: "#dc2626", border: "none", borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontWeight: 600 }}>
             🚪 Déconnexion
@@ -87,7 +94,8 @@ function Companies() {
         </div>
       </nav>
 
-      <div style={{ padding: "36px 40px" }}>
+      {/* Contenu */}
+      <div style={{ padding: "36px 40px", flex: 1 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
           <div>
             <h1 style={{ color: "#1e293b", fontWeight: 800, fontSize: "1.8rem", margin: 0 }}>🏢 Entreprises</h1>
@@ -128,7 +136,7 @@ function Companies() {
                     </span>
                   </td>
                   <td style={{ padding: "14px 20px" }}>
-                    <button onClick={() => { setForm({ nom: c.nom, domaine: c.domaine || "" }); setEditId(c.id); setShowModal(true); }}
+                    <button onClick={() => { setForm({ nom: c.nom || c.name, domaine: c.domaine || c.domain || "" }); setEditId(c.id); setShowModal(true); }}
                       style={{ marginRight: "8px", padding: "5px 12px", borderRadius: "6px", border: "1px solid #d1d5db", background: "white", cursor: "pointer" }}>✏️</button>
                     <button onClick={() => del(c.id)}
                       style={{ padding: "5px 12px", borderRadius: "6px", border: "none", background: "#fef2f2", color: "#dc2626", cursor: "pointer" }}>🗑️</button>
@@ -140,6 +148,9 @@ function Companies() {
         </div>
       </div>
 
+      <Footer />
+
+      {/* Modal */}
       {showModal && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
           <div style={{ background: "white", borderRadius: "14px", padding: "32px", width: "420px", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
