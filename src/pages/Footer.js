@@ -36,8 +36,6 @@ function Footer() {
             
               href="mailto:contact@yaconsulting.ci"
               style={{ color: "white", textDecoration: "none", fontSize: "0.95rem", fontWeight: 500 }}
-              onMouseEnter={(e) => e.target.style.textDecoration = "underline"}
-              onMouseLeave={(e) => e.target.style.textDecoration = "none"}
             >
               contact@yaconsulting.ci
             </a>
@@ -63,12 +61,10 @@ function Footer() {
               Abidjan, Côte d'Ivoire
             </div>
             
-              href="https://maps.google.com/?q=Abidjan,Cote+d'Ivoire"
+              href="https://maps.google.com/?q=Abidjan,Cote+d+Ivoire"
               target="_blank"
               rel="noreferrer"
               style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.82rem", textDecoration: "none" }}
-              onMouseEnter={(e) => e.target.style.color = "white"}
-              onMouseLeave={(e) => e.target.style.color = "rgba(255,255,255,0.6)"}
             >
               Voir sur la carte →
             </a>
@@ -95,8 +91,6 @@ function Footer() {
               target="_blank"
               rel="noreferrer"
               style={{ color: "white", textDecoration: "none", fontSize: "0.95rem", fontWeight: 500 }}
-              onMouseEnter={(e) => e.target.style.textDecoration = "underline"}
-              onMouseLeave={(e) => e.target.style.textDecoration = "none"}
             >
               www.yaconsulting.ci
             </a>
@@ -119,6 +113,7 @@ function Footer() {
       }}>
         © {new Date().getFullYear()} YA Consulting — Tous droits réservés | Plateforme Cloud de Vidéosurveillance
       </div>
+
     </footer>
   );
 }
