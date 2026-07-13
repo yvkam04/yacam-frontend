@@ -5,6 +5,7 @@ import Companies from "./pages/Companies";
 import Users from "./pages/Users";
 import Cameras from "./pages/Cameras";
 import PrivateRoute from "./pages/PrivateRoute";
+import CameraLive from './components/CameraLive';
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
         } />
         <Route path="/cameras" element={
           <PrivateRoute><Cameras /></PrivateRoute>
+        } />
+        <Route path="/camera-live" element={
+          <PrivateRoute><CameraLive /></PrivateRoute>
         } />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
