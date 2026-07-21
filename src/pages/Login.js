@@ -7,6 +7,11 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [mode, setMode] = useState("login"); // "login" | "forgot" | "reset"
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [resetCode, setResetCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [info, setInfo] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -22,6 +27,35 @@ function Login() {
       navigate("/dashboard");
     } catch (error) {
       setError("Email ou mot de passe incorrect.");
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    setError("");
+    setInfo("");
+    try {
+      await api.post("/forgot-password", { email: forgotEmail });
+      setInfo("Si ce compte existe, un code a été envoyé par email.");
+      setMode("reset");
+    } catch (error) {
+      setError("Une erreur est survenue. Réessaie.");
+    }
+  };
+
+  const handleResetPassword = async () => {
+    setError("");
+    setInfo("");
+    try {
+      await api.post("/reset-password", {
+        email: forgotEmail,
+        code: resetCode,
+        new_password: newPassword,
+      });
+      setInfo("Mot de passe mis à jour ! Tu peux te reconnecter.");
+      setMode("login");
+      setPassword("");
+    } catch (error) {
+      setError("Code invalide ou expiré.");
     }
   };
 
@@ -90,52 +124,182 @@ function Login() {
           </div>
         )}
 
-        {/* Email */}
-        <div style={{ marginBottom: "16px" }}>
-          <label style={{ fontWeight: 600, color: "#374151", fontSize: "0.9rem", display: "block", marginBottom: "6px" }}>
-            Adresse e-mail
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="exemple@yaconsulting.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{ borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db" }}
-          />
-        </div>
-
-        {/* Mot de passe */}
-        <div style={{ marginBottom: "24px" }}>
-          <label style={{ fontWeight: 600, color: "#374151", fontSize: "0.9rem", display: "block", marginBottom: "6px" }}>
-            Mot de passe
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db" }}
-          />
-        </div>
-
-        {/* Bouton */}
-        <button
-          onClick={handleLogin}
-          className="btn w-100"
-          style={{
-            background: "linear-gradient(90deg, #1b3a6b, #2563eb)",
-            color: "white",
+        {/* Info succès */}
+        {info && (
+          <div style={{
+            background: "#f0fdf4",
+            border: "1px solid #86efac",
+            color: "#16a34a",
             borderRadius: "8px",
-            padding: "12px",
-            fontWeight: 700,
-            fontSize: "1rem",
-            border: "none",
-          }}
-        >
-          🔐 Se connecter
-        </button>
+            padding: "10px 14px",
+            marginBottom: "16px",
+            fontSize: "0.88rem"
+          }}>
+            ✅ {info}
+          </div>
+        )}
+
+        {/* Mode: connexion */}
+        {mode === "login" && (
+          <>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ fontWeight: 600, color: "#374151", fontSize: "0.9rem", display: "block", marginBottom: "6px" }}>
+                Adresse e-mail
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="exemple@yaconsulting.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{ borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "12px" }}>
+              <label style={{ fontWeight: 600, color: "#374151", fontSize: "0.9rem", display: "block", marginBottom: "6px" }}>
+                Mot de passe
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db" }}
+              />
+            </div>
+
+            <div style={{ textAlign: "right", marginBottom: "20px" }}>
+              <span
+                onClick={() => { setMode("forgot"); setError(""); setInfo(""); }}
+                style={{ color: "#2563eb", fontSize: "0.85rem", cursor: "pointer", fontWeight: 600 }}
+              >
+                Mot de passe oublié ?
+              </span>
+            </div>
+
+            <button
+              onClick={handleLogin}
+              className="btn w-100"
+              style={{
+                background: "linear-gradient(90deg, #1b3a6b, #2563eb)",
+                color: "white",
+                borderRadius: "8px",
+                padding: "12px",
+                fontWeight: 700,
+                fontSize: "1rem",
+                border: "none",
+              }}
+            >
+              🔐 Se connecter
+            </button>
+          </>
+        )}
+
+        {/* Mode: mot de passe oublié */}
+        {mode === "forgot" && (
+          <>
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ fontWeight: 600, color: "#374151", fontSize: "0.9rem", display: "block", marginBottom: "6px" }}>
+                Adresse e-mail
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="exemple@yaconsulting.com"
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+                style={{ borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db" }}
+              />
+            </div>
+
+            <button
+              onClick={handleForgotPassword}
+              className="btn w-100"
+              style={{
+                background: "linear-gradient(90deg, #1b3a6b, #2563eb)",
+                color: "white",
+                borderRadius: "8px",
+                padding: "12px",
+                fontWeight: 700,
+                fontSize: "1rem",
+                border: "none",
+                marginBottom: "12px",
+              }}
+            >
+              Envoyer le code
+            </button>
+
+            <div style={{ textAlign: "center" }}>
+              <span
+                onClick={() => { setMode("login"); setError(""); setInfo(""); }}
+                style={{ color: "#64748b", fontSize: "0.85rem", cursor: "pointer" }}
+              >
+                ← Retour à la connexion
+              </span>
+            </div>
+          </>
+        )}
+
+        {/* Mode: réinitialisation */}
+        {mode === "reset" && (
+          <>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ fontWeight: 600, color: "#374151", fontSize: "0.9rem", display: "block", marginBottom: "6px" }}>
+                Code reçu par email
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="123456"
+                value={resetCode}
+                onChange={(e) => setResetCode(e.target.value)}
+                style={{ borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ fontWeight: 600, color: "#374151", fontSize: "0.9rem", display: "block", marginBottom: "6px" }}>
+                Nouveau mot de passe
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="••••••••"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                style={{ borderRadius: "8px", padding: "10px 14px", border: "1.5px solid #d1d5db" }}
+              />
+            </div>
+
+            <button
+              onClick={handleResetPassword}
+              className="btn w-100"
+              style={{
+                background: "linear-gradient(90deg, #1b3a6b, #2563eb)",
+                color: "white",
+                borderRadius: "8px",
+                padding: "12px",
+                fontWeight: 700,
+                fontSize: "1rem",
+                border: "none",
+                marginBottom: "12px",
+              }}
+            >
+              Réinitialiser le mot de passe
+            </button>
+
+            <div style={{ textAlign: "center" }}>
+              <span
+                onClick={() => { setMode("login"); setError(""); setInfo(""); }}
+                style={{ color: "#64748b", fontSize: "0.85rem", cursor: "pointer" }}
+              >
+                ← Retour à la connexion
+              </span>
+            </div>
+          </>
+        )}
 
         <p style={{ textAlign: "center", color: "#9ca3af", fontSize: "0.78rem", marginTop: "24px", marginBottom: 0 }}>
           © 2026 YA Consulting — Tous droits réservés
